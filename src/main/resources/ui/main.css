@@ -81,6 +81,6 @@
 }
 .table-view .virtual-flow .scroll-bar .increment-button,
 .table-view .virtual-flow .scroll-bar .decrement-button {
-    -fx-opacity: 0;
-    -fx-shape: none;
+    -fx-shape: " ";
+    -fx-padding: 0.15em 2px;
 }
