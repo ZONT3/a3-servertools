@@ -26,6 +26,7 @@ public class MEStage extends Stage {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/me.fxml"));
         root = loader.load();
         scene = new Scene(root);
+        scene.getStylesheets().add("/ui/main.css");
         controller = loader.getController();
 
         addListeners();

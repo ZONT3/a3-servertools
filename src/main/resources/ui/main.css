@@ -1,0 +1,86 @@
+
+* {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #DBDBDB;
+}
+
+.button {
+    -fx-border-color: #734ca9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+.button:default {
+    -fx-background-color: #1E132B;
+}
+.button:hover {
+    -fx-background-color: #734ca9;
+}
+.button:pressed {
+    -fx-background-color: #9a63e5;
+}
+
+.check-box > .box {
+    -fx-border-color: #734ca9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+.check-box:selected > .box,
+.check-box:indeterminate > .box {
+    -fx-background-color: #734ca9;
+}
+
+.choice-box {
+    -fx-border-color: #734ca9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+.choice-box:hover,
+.choice-box:hover > .open-button,
+.choice-box .menu-item:hover,
+.choice-box .menu-item:hover > * {
+    -fx-background-color: #4a4a4a;
+}
+
+.text-field {
+    -fx-border-color: #734ca9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #212121;
+}
+.text-field > * {
+    -fx-background-color: #212121;
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color:  #212121;
+}
+
+.table-view > * {
+    -fx-background-color: transparent;
+}
+.table-view * {
+    -fx-background-color: transparent;
+}
+.table-view {
+    -fx-border-color: #734ca9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(#2b2b2b 0%, #2b2b2b 50%, #212121 100%);
+}
+.table-row-cell {
+    -fx-background-color: #2b2b2b;
+}
+.table-row-cell:odd {
+    -fx-background-color: #212121;
+}
+.table-row-cell:selected {
+    -fx-background-color: #734ca9;
+}
+.table-view .virtual-flow .scroll-bar .increment-button,
+.table-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-shape: none;
+}

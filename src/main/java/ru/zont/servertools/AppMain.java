@@ -22,6 +22,7 @@ public class AppMain extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/main.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("/ui/main.css");
         controller = loader.getController();
 
         primaryStage.setTitle("ZONT's Server Tools for A3");
@@ -31,7 +32,8 @@ public class AppMain extends Application {
         controller.bt_me.setOnAction(event -> {
             try {
                 new MEStage().show();
-                primaryStage.close();
+                if (controller.cb_close.isSelected())
+                    primaryStage.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
