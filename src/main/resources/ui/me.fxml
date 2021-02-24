@@ -47,12 +47,26 @@
                       <ChoiceBox fx:id="sp_sep" GridPane.columnIndex="1" />
                    </children>
                 </GridPane>
+                <GridPane alignment="CENTER">
+                  <columnConstraints>
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints vgrow="ALWAYS" />
+                        <RowConstraints vgrow="NEVER" />
+                  </rowConstraints>
+                     <children>
+                        <Button fx:id="bt_ws" alignment="CENTER" minWidth="180.0" mnemonicParsing="false" text="Select Arma Workshop Dir" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+                        <Label fx:id="lb_ws" text="Label" GridPane.rowIndex="1" />
+                     </children>
+                </GridPane>
                </children>
            </VBox>
           <VBox alignment="BOTTOM_CENTER" spacing="5.0" GridPane.rowIndex="1">
              <children>
-                <Button fx:id="bt_us" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Updater script" textAlignment="CENTER" wrapText="true" />
+                <Button fx:id="bt_us" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Updater Script" textAlignment="CENTER" wrapText="true" />
                 <Button fx:id="bt_ap" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Arma Param" textAlignment="CENTER" wrapText="true" />
+                <Button fx:id="bt_save" defaultButton="true" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Save Preset" textAlignment="CENTER" wrapText="true" />
              </children>
           </VBox>
        </children>

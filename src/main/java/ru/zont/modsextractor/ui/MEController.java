@@ -17,7 +17,10 @@ public class MEController implements Initializable {
     public Button bt_us;
     public Button bt_ap;
     public TableView<Mod> table;
-    public ChoiceBox sp_sep;
+    public ChoiceBox<String> sp_sep;
+    public Button bt_ws;
+    public Label lb_ws;
+    public Button bt_save;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
