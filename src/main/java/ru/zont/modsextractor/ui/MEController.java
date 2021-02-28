@@ -21,6 +21,7 @@ public class MEController implements Initializable {
     public Button bt_ws;
     public Label lb_ws;
     public Button bt_save;
+    public Button bt_compare;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

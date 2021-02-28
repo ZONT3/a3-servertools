@@ -13,6 +13,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.zont.apptools.Commons;
+import ru.zont.apptools.Strings;
 import ru.zont.modsextractor.Mod;
 import ru.zont.modsextractor.ModList;
 import ru.zont.modsextractor.Parser;
@@ -20,11 +21,11 @@ import ru.zont.modsextractor.Parser;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MEStage extends Stage {
-
     private final Scene scene;
     private final Parent root;
     private final MEController controller;
@@ -77,19 +78,27 @@ public class MEStage extends Stage {
     private void addListeners() {
         controller.bt_ap.setOnAction(this::getAP);
         controller.bt_us.setOnAction(this::getUS);
-        controller.bt_select.setOnAction(this::selectPreset);
         controller.bt_ws.setOnAction(this::selectWorkshop);
         controller.bt_save.setOnAction(this::save);
+        controller.bt_select.setOnAction(event -> {
+            presetFile.set(selectPreset());
+            if (presetFile.get() != null) applyPreset();
+        });
+        controller.bt_compare.setOnAction(event -> {
+            File file = selectPreset();
+            if (file != null) comparePreset(file);
+        });
 
         workshopDir.addListener(this::workshopDirInvalidated);
         presetFile.addListener(this::presetInvalidated);
     }
 
     private void presetInvalidated(ObservableValue<? extends File> observableValue, File was, File cur) {
-        boolean value = cur == null;
+        boolean value = !isValidArma3Preset(cur);
         controller.bt_ap.setDisable(value);
         controller.bt_us.setDisable(value);
         controller.bt_save.setDisable(value);
+        controller.bt_compare.setDisable(value || !isValidWorkshopDir(workshopDir.get()));
     }
 
     private void save(ActionEvent event) {
@@ -97,7 +106,17 @@ public class MEStage extends Stage {
     }
 
     private void workshopDirInvalidated(ObservableValue<? extends String> observableValue, String prev, String cur) {
-        Commons.setValid(controller.lb_ws, !cur.isEmpty() && isValidWorkshopDir(new File(cur)));
+        boolean valid = isValidWorkshopDir(cur);
+        Commons.setValid(controller.lb_ws, valid);
+        controller.bt_compare.setDisable(!valid || presetFile.get() == null);
+    }
+
+    private boolean isValidArma3Preset(File cur) {
+        return cur != null && cur.isFile() && cur.getName().endsWith(".html");
+    }
+
+    private boolean isValidWorkshopDir(String cur) {
+        return !cur.isEmpty() && isValidWorkshopDir(new File(cur));
     }
 
     private void selectWorkshop(ActionEvent event) {
@@ -129,7 +148,7 @@ public class MEStage extends Stage {
         return false;
     }
 
-    private void selectPreset(ActionEvent event) {
+    private File selectPreset() {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arma 3 Preset", "*.html"));
 
@@ -139,8 +158,7 @@ public class MEStage extends Stage {
             fc.setInitialFileName(prev.getName());
         }
 
-        presetFile.set(fc.showOpenDialog(this));
-        if (presetFile.get() != null) applyPreset();
+        return fc.showOpenDialog(this);
     }
 
     private void applyPreset() {
@@ -148,8 +166,57 @@ public class MEStage extends Stage {
             modList = Parser.parse(presetFile.get());
             controller.table.getItems().addAll(modList);
         } catch (Exception e) {
-            e.printStackTrace();
+            Commons.reportError("Error", e);
         }
+    }
+
+    private void comparePreset(File file) { // fixme
+        try {
+            ModList comparing = Parser.parse(file, false);
+            ArrayList<Mod> additional = comparing.getAdditionalMods(modList);
+            ArrayList<Mod> subtracted = modList.getAdditionalMods(comparing);
+
+            File workshopDir = new File(this.workshopDir.get());
+
+            long additionalSize = Mod.modsSize(additional, workshopDir);
+            long subtractedSize = Mod.modsSize(subtracted, workshopDir);
+
+            long total = Mod.modsSize(modList, workshopDir);
+            String totalStr = total > 0 ? String.format("%02.02fGB", toGB(total)) : "???";
+
+            String header;
+            if (additionalSize < 0 || subtractedSize < 0)
+                header = "Some of sizes cannot be computed, because some mods are absent in your workshop dir.";
+            else header = null;
+
+            StringBuilder sizeStr = new StringBuilder();
+            if (additionalSize < 0 || subtractedSize < 0) {
+                if (subtractedSize > 0)
+                    sizeStr.append(String.format("-%02.02fGB", toGB(subtractedSize)));
+                if (additionalSize > 0)
+                    sizeStr.append(sizeStr.length() == 0 ? "" : " ")
+                            .append(String.format("+%02.02fGB", toGB(additionalSize)));
+            } else sizeStr.append("???");
+
+            StringBuilder modsStr = new StringBuilder();
+            int sSize = subtracted.size();
+            int aSize = additional.size();
+            if (sSize > 0) modsStr.append(String.format("-%d ", sSize));
+            if (aSize > 0) modsStr.append(String.format("+%d ", aSize));
+            modsStr.append(Strings.getPlural(aSize > 0 ? aSize : sSize, "plurals.mods"));
+
+            String content = Strings.STR.getString("mods.update",
+                    sizeStr, modsStr, totalStr, modList.size());
+
+            Commons.textAreaDialog("Modpack update template", header, content, Alert.AlertType.INFORMATION)
+                    .show();
+        } catch (IOException e) {
+            Commons.reportError("Error", e);
+        }
+    }
+
+    private float toGB(long b) {
+        return b / 1000.f / 1000.f / 1000.f;
     }
 
     private static void writePreset(ModList parse, File file) {

@@ -2,9 +2,10 @@ package ru.zont.modsextractor;
 
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import ru.zont.apptools.Commons;
 
-import java.net.URI;
-import java.net.URL;
+import java.io.File;
+import java.util.List;
 
 public class Mod {
     private final SimpleStringProperty name;
@@ -51,5 +52,22 @@ public class Mod {
 
     public SimpleStringProperty linkProperty() {
         return link;
+    }
+
+    public long modSize(File workshopDir) {
+        File thisDir = new File(workshopDir, "107410");
+        if (!thisDir.isDirectory()) throw new IllegalArgumentException("Corrupted workshop dir or mod is absent");
+        return Commons.size(thisDir.toPath());
+    }
+
+    public static long modsSize(List<Mod> list, File workshopDir) {
+        long sum = 0;
+        try {
+            for (Mod mod: list) sum += mod.modSize(workshopDir);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return sum;
     }
 }

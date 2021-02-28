@@ -7,18 +7,17 @@ import java.util.ArrayList;
 public class ModList extends ArrayList<Mod> {
     private final Document document;
 
-    public ModList(Document document) {
+    ModList(Document document) {
         this.document = document;
     }
 
-    @Override
-    public boolean add(Mod mod) {
-        boolean sup = super.add(mod);
-
-        setLink(mod, mod.getLink());
-        mod.linkProperty().addListener((observable, oldValue, newValue) -> setLink(mod, newValue));
-
-        return sup;
+    @SuppressWarnings("UnusedReturnValue")
+    public boolean add(Mod mod, boolean modifyFile) {
+        if (modifyFile) {
+            setLink(mod, mod.getLink());
+            mod.linkProperty().addListener((observable, oldValue, newValue) -> setLink(mod, newValue));
+        }
+        return add(mod);
     }
 
     public void setLink(Mod mod, String link) {
@@ -32,5 +31,11 @@ public class ModList extends ArrayList<Mod> {
 
     public String getPresetHTML() {
         return document.outerHtml();
+    }
+
+    public ArrayList<Mod> getAdditionalMods(ModList comparingTo) {
+        ArrayList<Mod> res = new ArrayList<>(this);
+        res.removeIf(mod -> comparingTo.stream().filter(m -> m.getId() == mod.getId()).findAny().orElse(null) != null);
+        return res;
     }
 }

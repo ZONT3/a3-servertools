@@ -64,6 +64,7 @@
            </VBox>
           <VBox alignment="BOTTOM_CENTER" spacing="5.0" GridPane.rowIndex="1">
              <children>
+                <Button fx:id="bt_compare" alignment="CENTER" minWidth="180.0" mnemonicParsing="false" text="Compare to..." />
                 <Button fx:id="bt_us" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Updater Script" textAlignment="CENTER" wrapText="true" />
                 <Button fx:id="bt_ap" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Arma Param" textAlignment="CENTER" wrapText="true" />
                 <Button fx:id="bt_save" defaultButton="true" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Save Preset" textAlignment="CENTER" wrapText="true" />

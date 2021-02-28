@@ -13,6 +13,10 @@ import java.net.URISyntaxException;
 
 public class Parser {
     public static ModList parse(File file) throws IOException {
+        return parse(file, true);
+    }
+
+    public static ModList parse(File file, boolean modifyFile) throws IOException {
         Document doc = Jsoup.parse(file, "UTF-8");
         Elements trs = doc.body().getElementsByAttributeValue("data-type", "ModContainer");
         ModList mods = new ModList(doc);
@@ -38,7 +42,7 @@ public class Parser {
                 genLinkName(mod);
             else mod.setLink(link);
 
-            mods.add(mod);
+            mods.add(mod, modifyFile);
         }
         return mods;
     }
