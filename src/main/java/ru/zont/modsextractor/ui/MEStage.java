@@ -24,6 +24,7 @@ import ru.zont.modsextractor.Parser;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -239,7 +240,7 @@ public class MEStage extends Stage {
 
     private static void writePreset(ModList parse, File file) {
         try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(file));
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
             pw.write(parse.getPresetHTML());
             pw.flush();
             pw.close();
