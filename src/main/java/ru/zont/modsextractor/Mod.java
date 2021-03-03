@@ -55,7 +55,7 @@ public class Mod {
     }
 
     public long modSize(File workshopDir) {
-        File thisDir = new File(workshopDir, "107410");
+        File thisDir = new File(workshopDir, "107410/" + id.get());
         if (!thisDir.isDirectory()) throw new IllegalArgumentException("Corrupted workshop dir or mod is absent");
         return Commons.size(thisDir.toPath());
     }

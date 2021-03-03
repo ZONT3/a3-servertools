@@ -62,9 +62,14 @@
                 </GridPane>
                </children>
            </VBox>
-          <VBox alignment="BOTTOM_CENTER" spacing="5.0" GridPane.rowIndex="1">
+          <VBox fx:id="grp_operations" alignment="BOTTOM_CENTER" spacing="5.0" GridPane.rowIndex="1">
              <children>
-                <Button fx:id="bt_compare" alignment="CENTER" minWidth="180.0" mnemonicParsing="false" text="Compare to..." />
+                  <HBox fx:id="grp_info" alignment="CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                      <Button fx:id="bt_compare" alignment="CENTER" mnemonicParsing="false" prefWidth="90.0" text="Compare to..." HBox.hgrow="ALWAYS" />
+                      <Button fx:id="bt_info" alignment="CENTER" mnemonicParsing="false" prefWidth="90.0" text="Get info..." HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                 <Button fx:id="bt_us" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Updater Script" textAlignment="CENTER" wrapText="true" />
                 <Button fx:id="bt_ap" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Arma Param" textAlignment="CENTER" wrapText="true" />
                 <Button fx:id="bt_save" defaultButton="true" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="Save Preset" textAlignment="CENTER" wrapText="true" />

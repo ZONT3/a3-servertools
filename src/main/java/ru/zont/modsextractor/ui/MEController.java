@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import ru.zont.modsextractor.Mod;
 
 import java.net.URL;
@@ -22,6 +24,9 @@ public class MEController implements Initializable {
     public Label lb_ws;
     public Button bt_save;
     public Button bt_compare;
+    public Button bt_info;
+    public HBox grp_info;
+    public VBox grp_operations;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

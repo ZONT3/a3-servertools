@@ -1,5 +1,8 @@
 package ru.zont.modsextractor.ui;
 
+import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -30,6 +33,7 @@ public class MEStage extends Stage {
     private final Parent root;
     private final MEController controller;
 
+    private final SimpleBooleanProperty loadingCompare = new SimpleBooleanProperty(false);
     private final SimpleStringProperty workshopDir = new SimpleStringProperty();
     private final SimpleObjectProperty<File> presetFile = new SimpleObjectProperty<>(null);
     private ModList modList = null;
@@ -51,9 +55,8 @@ public class MEStage extends Stage {
     }
 
     private void setupControls() {
-        controller.bt_ap.setDisable(true);
-        controller.bt_us.setDisable(true);
-        controller.bt_save.setDisable(true);
+        controller.grp_operations.setDisable(true);
+        controller.grp_info.setDisable(true);
     }
 
     private void tryFindWorkshop() {
@@ -86,19 +89,25 @@ public class MEStage extends Stage {
         });
         controller.bt_compare.setOnAction(event -> {
             File file = selectPreset();
-            if (file != null) comparePreset(file);
+            new Thread(() -> {
+                if (file != null) comparePreset(file);
+            }, "Comparing presets").start();
+        });
+        controller.bt_info.setOnAction(event -> {
+            Commons.textAreaDialog("Modpack info", null,
+                    getModpackTotalStr(modList, new File(workshopDir.get())) + "\n",
+                    Alert.AlertType.INFORMATION).show();
         });
 
         workshopDir.addListener(this::workshopDirInvalidated);
         presetFile.addListener(this::presetInvalidated);
+        loadingCompare.addListener(this::presetInvalidated);
     }
 
-    private void presetInvalidated(ObservableValue<? extends File> observableValue, File was, File cur) {
-        boolean value = !isValidArma3Preset(cur);
-        controller.bt_ap.setDisable(value);
-        controller.bt_us.setDisable(value);
-        controller.bt_save.setDisable(value);
-        controller.bt_compare.setDisable(value || !isValidWorkshopDir(workshopDir.get()));
+    private void presetInvalidated(Observable observableValue) {
+        boolean value = !isValidArma3Preset(presetFile.get()) || loadingCompare.get();
+        controller.grp_operations.setDisable(value);
+        controller.grp_info.setDisable(value || !isValidWorkshopDir(workshopDir.get()));
     }
 
     private void save(ActionEvent event) {
@@ -108,7 +117,7 @@ public class MEStage extends Stage {
     private void workshopDirInvalidated(ObservableValue<? extends String> observableValue, String prev, String cur) {
         boolean valid = isValidWorkshopDir(cur);
         Commons.setValid(controller.lb_ws, valid);
-        controller.bt_compare.setDisable(!valid || presetFile.get() == null);
+        controller.grp_info.setDisable(!valid || presetFile.get() == null);
     }
 
     private boolean isValidArma3Preset(File cur) {
@@ -164,13 +173,14 @@ public class MEStage extends Stage {
     private void applyPreset() {
         try {
             modList = Parser.parse(presetFile.get());
+            controller.table.getItems().clear();
             controller.table.getItems().addAll(modList);
         } catch (Exception e) {
             Commons.reportError("Error", e);
         }
     }
 
-    private void comparePreset(File file) { // fixme
+    private void comparePreset(File file) {
         try {
             ModList comparing = Parser.parse(file, false);
             ArrayList<Mod> additional = comparing.getAdditionalMods(modList);
@@ -181,8 +191,6 @@ public class MEStage extends Stage {
             long additionalSize = Mod.modsSize(additional, workshopDir);
             long subtractedSize = Mod.modsSize(subtracted, workshopDir);
 
-            long total = Mod.modsSize(modList, workshopDir);
-            String totalStr = total > 0 ? String.format("%02.02fGB", toGB(total)) : "???";
 
             String header;
             if (additionalSize < 0 || subtractedSize < 0)
@@ -190,7 +198,7 @@ public class MEStage extends Stage {
             else header = null;
 
             StringBuilder sizeStr = new StringBuilder();
-            if (additionalSize < 0 || subtractedSize < 0) {
+            if (additionalSize > 0 || subtractedSize > 0) {
                 if (subtractedSize > 0)
                     sizeStr.append(String.format("-%02.02fGB", toGB(subtractedSize)));
                 if (additionalSize > 0)
@@ -205,14 +213,24 @@ public class MEStage extends Stage {
             if (aSize > 0) modsStr.append(String.format("+%d ", aSize));
             modsStr.append(Strings.getPlural(aSize > 0 ? aSize : sSize, "plurals.mods"));
 
-            String content = Strings.STR.getString("mods.update",
-                    sizeStr, modsStr, totalStr, modList.size());
+            String content = String.format("%s\n\n%s\n%s",
+                    Strings.STR.getString("mods.update.title"),
+                    Strings.STR.getString("mods.update.size", sizeStr, modsStr),
+                    getModpackTotalStr(comparing, workshopDir));
 
-            Commons.textAreaDialog("Modpack update template", header, content, Alert.AlertType.INFORMATION)
-                    .show();
+            Platform.runLater(() ->
+                    Commons.textAreaDialog("Modpack update template",
+                            header, content, Alert.AlertType.INFORMATION)
+                    .show());
         } catch (IOException e) {
             Commons.reportError("Error", e);
         }
+    }
+
+    private String getModpackTotalStr(ModList comparing, File workshopDir) {
+        long total = Mod.modsSize(comparing, workshopDir);
+        String totalStr = total > 0 ? String.format("%02.02fGB", toGB(total)) : "???";
+        return Strings.STR.getString("mods.info.size", totalStr, String.format("%d %s", comparing.size(), Strings.getPlural(comparing.size(), "plurals.mods")));
     }
 
     private float toGB(long b) {
