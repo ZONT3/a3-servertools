@@ -39,14 +39,14 @@ public class MPMain {
     private static void checkInit() {
         if (fFmpeg == null) {
             try {
-                fFmpeg = new FFmpeg("bin/ffmpeg.exe");
+                fFmpeg = new FFmpeg("svtools_bin/ffmpeg.exe");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         if (fFprobe== null) {
             try {
-                fFprobe = new FFprobe("bin/ffprobe.exe");
+                fFprobe = new FFprobe("svtools_bin/ffprobe.exe");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -208,7 +208,7 @@ public class MPMain {
                             entry.getArtist() + " - " + entry.getName(),
                             pathPrefix + entry.getFilename(),
                             cfgMusicClass,
-                            new DecimalFormat("#.0#").format(entry.getDur())
+                            new DecimalFormat("#.0#").format(entry.getDur()).replaceAll(",", ".")
                     ))
                     .append("\n");
         }
@@ -225,7 +225,7 @@ public class MPMain {
     public String buildCfgMusicClasses() {
         assertions();
 
-        return String.format("class %s { displayName = \"%s\"; };", getCfgMusicClass(), list.getDisplayName().replaceAll("\"", "\"\""));
+        return String.format("    class %s { displayName = \"%s\"; };", getCfgMusicClass(), list.getDisplayName().replaceAll("\"", "\"\""));
     }
 
     private String getCfgMusicClass() {
