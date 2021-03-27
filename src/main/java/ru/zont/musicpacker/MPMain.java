@@ -126,7 +126,7 @@ public class MPMain {
                         .findAny().orElse(null)
                         : null;
 
-                String name = ie != null && ie.getName() != null ? ie.getName() : filename;
+                String name = ie != null && ie.getName() != null ? ie.getName() : filename.replaceAll("-", " ").replaceAll("\\.ogg", "");
                 String artist = ie != null && ie.getArtist() != null ? ie.getArtist() : "";
 
                 list.add(new MusicEntry(name, artist, filename, getDuration(out)));
@@ -204,7 +204,7 @@ public class MPMain {
                     "        duration=%s;\n" +
                     "    };";
             sb.append(String.format(s,
-                            musicClassPrefix + "_" + (i+1),
+                            musicClassPrefix + (i+1),
                             entry.getArtist() + " - " + entry.getName(),
                             pathPrefix + entry.getFilename(),
                             cfgMusicClass,
