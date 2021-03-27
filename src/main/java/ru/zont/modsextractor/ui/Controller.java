@@ -1,6 +1,5 @@
 package ru.zont.modsextractor.ui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -13,7 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
-public class MEController implements Initializable {
+public class Controller implements Initializable {
     public Button bt_select;
     public TextField tf_prefix;
     public Button bt_us;

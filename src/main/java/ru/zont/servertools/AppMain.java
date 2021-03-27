@@ -1,17 +1,19 @@
 package ru.zont.servertools;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.zont.modsextractor.ui.MEStage;
-
-import java.io.IOException;
+import ru.zont.musicpacker.ui.MPStage;
 
 public class AppMain extends Application {
 
     private MainController controller;
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,18 +27,24 @@ public class AppMain extends Application {
         scene.getStylesheets().add("/ui/main.css");
         controller = loader.getController();
 
-        primaryStage.setTitle("ZONT's Server Tools for A3");
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("ZONT's Server Tools for A3");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        controller.bt_me.setOnAction(event -> {
+        controller.bt_me.setOnAction(openTool(new MEStage()));
+        controller.bt_mp.setOnAction(openTool(new MPStage()));
+    }
+
+    private EventHandler<ActionEvent> openTool(Stage stage) {
+        return event -> {
             try {
-                new MEStage().show();
+                stage.show();
                 if (controller.cb_close.isSelected())
                     primaryStage.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        };
     }
 }

@@ -1,5 +1,7 @@
 package ru.zont.apptools;
 
+import net.gcardone.junidecode.Junidecode;
+
 import java.util.ResourceBundle;
 
 public class Strings {
@@ -49,5 +51,17 @@ public class Strings {
     public static String trimSnippet(String original, int count) {
         int length = original.length();
         return original.substring(0, Math.min(count, length)) + "...";
+    }
+
+    public static String normalizeString(String str) {
+        String name = Junidecode.unidecode(str)
+                .replaceAll("([^\\w]|[_])", "-")
+                .replaceAll("--+", "-")
+                .toLowerCase();
+        if (name.startsWith("-"))
+            name = name.replaceFirst("-+", "");
+        while (name.endsWith("-"))
+            name = name.substring(0, name.length() -1);
+        return name;
     }
 }

@@ -43,6 +43,19 @@ public class Commons {
                 || os.toLowerCase().contains("aix"));
     }
 
+    private static String getAppData() {
+        String workingDirectory;
+        if ((System.getProperty("os.name")).toUpperCase()
+                .contains("WIN")) {
+            workingDirectory = System.getenv("AppData");
+            workingDirectory += "/zont-servertools";
+        } else {
+            workingDirectory = System.getProperty("user.home");
+            workingDirectory += "/.zont-servertools";
+        }
+        return workingDirectory;
+    }
+
     public static void wrapErrors(WRunnable r) {
         wrapErrors(r, null);
     }

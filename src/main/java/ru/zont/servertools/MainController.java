@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     public Button bt_me;
     public CheckBox cb_close;
+    public Button bt_mp;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

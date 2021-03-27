@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="CENTER" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.zont.musicpacker.ui.Controller">
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+    <children>
+        <GridPane GridPane.columnIndex="1">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="NEVER" />
+            </rowConstraints>
+            <children>
+                <VBox fx:id="grp_top" alignment="TOP_CENTER" spacing="5.0" GridPane.rowIndex="0">
+                    <children>
+                  <Label alignment="BOTTOM_CENTER" text="Выбрать:" textAlignment="CENTER" />
+                  <HBox>
+                     <children>
+                              <Button fx:id="bt_select" mnemonicParsing="false" prefWidth="90.0" text="Архив" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="bt_select_f" mnemonicParsing="false" prefWidth="90.0" text="Папка" textAlignment="CENTER" wrapText="true" />
+                     </children>
+                  </HBox>
+                  <ProgressBar fx:id="pb" prefWidth="200.0" progress="0.0" />
+                        <TextField fx:id="tf_name" alignment="CENTER" promptText="Название сета музыки" />
+                        <TextField fx:id="tf_prefix" alignment="CENTER" promptText="Path prefix" text="base\music" />
+                    </children>
+                </VBox>
+                <VBox fx:id="grp_operations" alignment="BOTTOM_CENTER" spacing="5.0" GridPane.rowIndex="1">
+                    <children>
+                  <CheckBox fx:id="cb_wrap" mnemonicParsing="false" text="Wrap Cfg Classes" />
+                        <Button fx:id="bt_cfg_mc" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="CfgMusicClasses" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="bt_cfg_m" maxWidth="180.0" minWidth="180.0" mnemonicParsing="false" text="CfgMusic" textAlignment="CENTER" wrapText="true" />
+                  <Label alignment="BOTTOM_CENTER" minHeight="30.0" text="Экспорт:" textAlignment="CENTER" />
+                  <HBox alignment="CENTER">
+                     <children>
+                              <Button fx:id="bt_zip" mnemonicParsing="false" prefWidth="90.0" text="ZIP" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="bt_dir" mnemonicParsing="false" prefWidth="90.0" text="Папка" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
+        <TableView fx:id="table" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+            <columns>
+                <TableColumn editable="false" minWidth="115.0" prefWidth="178.0" text="Исполнитель">
+                    <cellValueFactory><PropertyValueFactory property="artist" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn editable="false" minWidth="75.0" prefWidth="281.0" text="Название">
+                    <cellValueFactory><PropertyValueFactory property="name" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn editable="false" minWidth="75.0" prefWidth="145.0" text="Файл">
+                    <cellValueFactory><PropertyValueFactory property="filename" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+            <GridPane.margin>
+                <Insets right="5.0" />
+            </GridPane.margin>
+        </TableView>
+    </children>
+</GridPane>

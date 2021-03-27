@@ -29,7 +29,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
                <image>
-                  <Image url="" />
+                  <Image url="@/pic/error.png" />
                </image></ImageView>
             <Label fx:id="title" text="Title" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <GridPane.margin>

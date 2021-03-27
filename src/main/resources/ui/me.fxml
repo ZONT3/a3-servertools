@@ -5,7 +5,7 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="CENTER" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.zont.modsextractor.ui.MEController">
+<GridPane alignment="CENTER" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.zont.modsextractor.ui.Controller">
 <columnConstraints>
   <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
   <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" />

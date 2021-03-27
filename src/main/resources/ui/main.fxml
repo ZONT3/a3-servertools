@@ -16,6 +16,7 @@
       <VBox alignment="CENTER" >
          <children>
             <Button fx:id="bt_me" mnemonicParsing="false" prefWidth="240.0" text="ModsExtractor" />
+            <Button fx:id="bt_mp" mnemonicParsing="false" prefWidth="240.0" text="MusicPacker" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

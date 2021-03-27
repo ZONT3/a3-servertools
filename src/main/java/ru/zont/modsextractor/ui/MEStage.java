@@ -32,7 +32,7 @@ import java.util.List;
 public class MEStage extends Stage {
     private final Scene scene;
     private final Parent root;
-    private final MEController controller;
+    private final Controller controller;
 
     private final SimpleBooleanProperty loadingCompare = new SimpleBooleanProperty(false);
     private final SimpleStringProperty workshopDir = new SimpleStringProperty();

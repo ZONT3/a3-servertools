@@ -1,10 +1,10 @@
 package ru.zont.modsextractor;
 
-import net.gcardone.junidecode.Junidecode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.zont.apptools.Strings;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,14 +52,7 @@ public class Parser {
     }
 
     private static void genLinkName(Mod mod) {
-        String name = Junidecode.unidecode(mod.getName())
-                .replaceAll("([^\\w]|[_])", "-")
-                .replaceAll("--+", "-")
-                .toLowerCase();
-        if (name.startsWith("-"))
-            name = name.replaceFirst("-+", "");
-        while (name.endsWith("-"))
-            name = name.substring(0, name.length() -1);
+        String name = Strings.normalizeString(mod.getName());
 
         mod.setLink("@" + name);
     }

@@ -12,9 +12,14 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     implementation 'net.gcardone.junidecode:junidecode:0.4.1'
+
+    // https://mvnrepository.com/artifact/net.bramp.ffmpeg/ffmpeg
+    implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.6.2'
+
 }
 
 test {
